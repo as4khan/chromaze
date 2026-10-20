@@ -1,5 +1,6 @@
+/** Original handcrafted levels shared by gameplay, rendering, and sliding-solvability tests. */
 import { Level } from './engine';
-// Original handcrafted layouts. A dot is floor; a hash is wall.
+// A dot is floor; a hash is wall. Starts are zero-based; array order defines progression.
 export const levels: readonly Level[] = [
   { id: 1, name: 'First light', start: { row: 0, col: 0 }, grid: [
     '.....', '####.', '.....', '.####', '.....',

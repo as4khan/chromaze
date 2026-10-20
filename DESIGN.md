@@ -113,7 +113,7 @@ Controls use gently rounded corners; the board frame and completion panel use br
 
 - **Buttons:** Primary mint and secondary wall-tone fills; minimum height 54. Pressed opacity is 0.75 with scale 0.98; disabled opacity is 0.35. No custom keyboard-focus or hover styling exists in the native source.
 - **Progress:** A four-unit mint fill on a wall-tone track, with painted/total text and an accessible progress value.
-- **Maze board:** Skia reads shared Reanimated progress. Movement is linear at 100 ms per tile; the continuous trail follows the ball and newly reached tiles fade in. JS receives at most one paint-count update per reached tile. Input during a slide is ignored; navigation, undo, and restart disable while it runs.
+- **Maze board:** Skia reads UI-thread motion geometry and progress, updated atomically. Movement is linear at 50 ms per tile; the continuous trail follows the ball and newly reached tiles fade in. The rolling highlight retains its phase across turns. JS receives deliberate commands, reached tile centers, and slide completions; progress-label updates do not rerender the memoized board. One latest direction is buffered during each slide. Undo and restart disable while sliding; Home cancels safely. The header uses a fixed Home slot and a flexible, single-line title so the controls cannot overlap.
 - **Completion:** Appears after the slide commits. Percentage and copy communicate success independently of motion; the panel scales from 0.92 to 1 with spring damping 14. It offers next/home and undo actions.
 - **Navigation:** Home/continue actions switch between two native screens; there is no tab bar.
 

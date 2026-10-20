@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { animationPlan, commitSlide, complete, floorTiles, initialGame, key, Level, paint, reachedTiles, slide, swipeDirection, undo } from '../src/game/engine';
+import { animationPlan, commitSlide, complete, floorTiles, initialGame, key, Level, MS_PER_TILE, paint, reachedTiles, slide, swipeDirection, undo } from '../src/game/engine';
 import { levels } from '../src/game/levels';
 import { solve } from '../src/game/solver';
 const corridor: Level = { id: 0, name: 'Test', start: { row: 0, col: 0 }, grid: ['.....#', '######'] };
@@ -52,10 +52,15 @@ test('completion requires every floor tile', () => {
 });
 test('animation destination and duration agree with collision path', () => {
   const path = slide(corridor, corridor.start, 'right');
-  assert.deepEqual(animationPlan(corridor.start, path), {from:corridor.start, destination:{row:0,col:4}, distance:4, duration:400});
+  assert.deepEqual(animationPlan(corridor.start, path), {from:corridor.start, destination:{row:0,col:4}, distance:4, duration:200});
+  assert.equal(MS_PER_TILE, 50);
+  assert.equal(animationPlan(corridor.start, path.slice(0, 1)).duration, 50);
+  assert.equal(animationPlan(corridor.start, []).duration, 0);
   assert.deepEqual(animationPlan(corridor.start, []).destination, corridor.start);
 });
 test('paint progression only counts tile centers physically reached', () => {
+  const duration = animationPlan(corridor.start, slide(corridor, corridor.start, 'right')).duration;
+  assert.deepEqual([0, 49, 50, 100, 150, 200].map(ms => reachedTiles(4, ms / duration)), [0, 0, 1, 2, 3, 4]);
   assert.equal(reachedTiles(4, 0), 0);
   assert.equal(reachedTiles(4, 0.24), 0);
   assert.equal(reachedTiles(4, 0.25), 1);
@@ -65,7 +70,7 @@ test('paint progression only counts tile centers physically reached', () => {
   assert.deepEqual(paint(['0,0'], path.slice(0, reachedTiles(4, 0.5))), ['0,0','0,1','0,2']);
 });
 test('swipes use dominant axis and reject small gestures', () => {
-  assert.equal(swipeDirection(21, 0), null);
+  assert.equal(swipeDirection(13, 0), null);
   assert.equal(swipeDirection(70, 23), 'right');
   assert.equal(swipeDirection(-70, 23), 'left');
   assert.equal(swipeDirection(3, -50), 'up');
