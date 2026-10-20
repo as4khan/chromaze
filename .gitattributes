@@ -1,0 +1,64 @@
+# Normalize detected text in the index and use LF in every working tree.
+* text=auto eol=lf
+
+# Explicit source/config rules also cover newly added files on every OS.
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.md text eol=lf
+*.mdx text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+LICENSE text eol=lf
+
+# Binary assets must never undergo line-ending conversion.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.icns binary
+*.bmp binary
+*.heic binary
+*.tif binary
+*.tiff binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.m4a binary
+*.aac binary
+*.flac binary
+*.mp4 binary
+*.mov binary
+*.webm binary
+*.m4v binary
+*.avi binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.7z binary
+*.hbc binary
+*.db binary
+*.sqlite binary
+*.sqlite3 binary

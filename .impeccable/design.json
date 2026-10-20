@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T14:25:18.186Z",
+  "title": "Design System: Chromaze",
+  "extensions": {
+    "platform": "adaptive",
+    "mode": "experience",
+    "verification": "Source-derived manual documentation. Native visual inspection and device performance checks remain pending. Panel snippets are illustrative HTML translations, not native previews.",
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Night field",
+        "tonalRamp": [
+          "oklch(15% 0.03 264)",
+          "oklch(26% 0.03 264)",
+          "oklch(38% 0.03 264)",
+          "oklch(49% 0.03 264)",
+          "oklch(61% 0.03 264)",
+          "oklch(72% 0.03 264)",
+          "oklch(84% 0.03 264)",
+          "oklch(95% 0.03 264)"
+        ]
+      },
+      "wall": {
+        "role": "neutral",
+        "displayName": "Slate walls",
+        "tonalRamp": [
+          "oklch(15% 0.04 262)",
+          "oklch(26% 0.04 262)",
+          "oklch(38% 0.04 262)",
+          "oklch(49% 0.04 262)",
+          "oklch(61% 0.04 262)",
+          "oklch(72% 0.04 262)",
+          "oklch(84% 0.04 262)",
+          "oklch(95% 0.04 262)"
+        ]
+      },
+      "paint": {
+        "role": "primary",
+        "displayName": "Mint paint",
+        "tonalRamp": [
+          "oklch(15% 0.12 179)",
+          "oklch(26% 0.12 179)",
+          "oklch(38% 0.12 179)",
+          "oklch(49% 0.12 179)",
+          "oklch(61% 0.12 179)",
+          "oklch(72% 0.12 179)",
+          "oklch(84% 0.12 179)",
+          "oklch(95% 0.12 179)"
+        ]
+      },
+      "ball": {
+        "role": "secondary",
+        "displayName": "Lavender ball",
+        "tonalRamp": [
+          "oklch(15% 0.16 300)",
+          "oklch(26% 0.16 300)",
+          "oklch(38% 0.16 300)",
+          "oklch(49% 0.16 300)",
+          "oklch(61% 0.16 300)",
+          "oklch(72% 0.16 300)",
+          "oklch(84% 0.16 300)",
+          "oklch(95% 0.16 300)"
+        ]
+      },
+      "accent": {
+        "role": "tertiary",
+        "displayName": "Amber counter",
+        "tonalRamp": [
+          "oklch(15% 0.12 70)",
+          "oklch(26% 0.12 70)",
+          "oklch(38% 0.12 70)",
+          "oklch(49% 0.12 70)",
+          "oklch(61% 0.12 70)",
+          "oklch(72% 0.12 70)",
+          "oklch(84% 0.12 70)",
+          "oklch(95% 0.12 70)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Bright text",
+        "tonalRamp": [
+          "oklch(15% 0.01 266)",
+          "oklch(26% 0.01 266)",
+          "oklch(38% 0.01 266)",
+          "oklch(49% 0.01 266)",
+          "oklch(61% 0.01 266)",
+          "oklch(72% 0.01 266)",
+          "oklch(84% 0.01 266)",
+          "oklch(95% 0.01 266)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted text",
+        "tonalRamp": [
+          "oklch(15% 0.03 258)",
+          "oklch(26% 0.03 258)",
+          "oklch(38% 0.03 258)",
+          "oklch(49% 0.03 258)",
+          "oklch(61% 0.03 258)",
+          "oklch(72% 0.03 258)",
+          "oklch(84% 0.03 258)",
+          "oklch(95% 0.03 258)"
+        ]
+      },
+      "floor": {
+        "role": "neutral",
+        "displayName": "Unpainted floor",
+        "tonalRamp": [
+          "oklch(15% 0.03 262)",
+          "oklch(26% 0.03 262)",
+          "oklch(38% 0.03 262)",
+          "oklch(49% 0.03 262)",
+          "oklch(61% 0.03 262)",
+          "oklch(72% 0.03 262)",
+          "oklch(84% 0.03 262)",
+          "oklch(95% 0.03 262)"
+        ]
+      },
+      "recess": {
+        "role": "neutral",
+        "displayName": "Board recess",
+        "tonalRamp": [
+          "oklch(15% 0.03 264)",
+          "oklch(26% 0.03 264)",
+          "oklch(38% 0.03 264)",
+          "oklch(49% 0.03 264)",
+          "oklch(61% 0.03 264)",
+          "oklch(72% 0.03 264)",
+          "oklch(84% 0.03 264)",
+          "oklch(95% 0.03 264)"
+        ]
+      }
+    },
+    "tonalRampNote": "Synthesized OKLCH reference ramps; not implemented theme values or approved additions to the palette.",
+    "shadows": [
+      {
+        "name": "completion-native",
+        "value": "shadowColor #000; shadowOffset {width:0,height:8}; shadowOpacity 0.4; shadowRadius 18; elevation 8",
+        "purpose": "Completion panel only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "slide",
+        "value": "100 ms per tile; linear",
+        "purpose": "Shared ball and paint progress."
+      },
+      {
+        "name": "completion",
+        "value": "scale 0.92 to 1; spring damping 14",
+        "purpose": "Success panel after the slide commits."
+      },
+      {
+        "name": "button-pressed",
+        "value": "opacity 0.75; scale 0.98",
+        "purpose": "Touch feedback; disabled opacity is 0.35."
+      }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Native action translated to HTML. Focus outline is a panel-only browser affordance.",
+      "html": "<button class=\"ds-button-primary\">Play</button>",
+      "css": ".ds-button-primary{background:#5CD6C0;color:#111827;min-height:54px;border:0;border-radius:14px;padding:15px 24px;font:600 16px 'Space Grotesk',sans-serif}.ds-button-primary:hover{cursor:pointer}.ds-button-primary:focus-visible{outline:2px solid #F3F5FA;outline-offset:3px}.ds-button-primary:active{opacity:.75;transform:scale(.98)}.ds-button-primary:disabled{opacity:.35}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Native action translated to HTML. Focus outline is a panel-only browser affordance.",
+      "html": "<button class=\"ds-button-secondary\">Undo</button>",
+      "css": ".ds-button-secondary{background:#2F3B52;color:#F3F5FA;min-height:54px;border:0;border-radius:14px;padding:15px 24px;font:600 16px 'Space Grotesk',sans-serif}.ds-button-secondary:hover{cursor:pointer}.ds-button-secondary:focus-visible{outline:2px solid #F3F5FA;outline-offset:3px}.ds-button-secondary:active{opacity:.75;transform:scale(.98)}.ds-button-secondary:disabled{opacity:.35}"
+    },
+    {
+      "name": "Paint progress",
+      "kind": "custom",
+      "description": "Painted/total counter and four-unit progress track.",
+      "html": "<div class=\"ds-progress\"><div class=\"ds-progress-label\"><span>Painted</span><span>12 / 24</span></div><div class=\"ds-progress-track\" role=\"progressbar\" aria-label=\"Painted tiles\" aria-valuemin=\"0\" aria-valuemax=\"24\" aria-valuenow=\"12\"><div class=\"ds-progress-fill\"></div></div></div>",
+      "css": ".ds-progress{width:260px;font:400 13px 'Space Grotesk',sans-serif;color:#AEBBD0}.ds-progress-label{display:flex;justify-content:space-between;margin-bottom:10px}.ds-progress-label span:last-child{color:#5CD6C0;font-variant-numeric:tabular-nums}.ds-progress-track{height:4px;background:#2F3B52;border-radius:2px;overflow:hidden}.ds-progress-fill{width:50%;height:4px;background:#5CD6C0}"
+    },
+    {
+      "name": "Board materials",
+      "kind": "custom",
+      "refersTo": "board-frame",
+      "description": "Illustrative material swatch, not an implemented maze layout or native canvas preview.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-corridor\"><span class=\"ds-ball\"></span></div></div>",
+      "css": ".ds-board{width:220px;padding:28px 10px;background:#2F3B52;border:10px solid #0B1220;border-radius:22px}.ds-corridor{height:40px;background:#5CD6C0;border-radius:6px;position:relative}.ds-ball{position:absolute;right:8px;top:7px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#E4D9FF,#A78BFA 38%,#7252C8);box-shadow:0 3px 0 #10182788}"
+    },
+    {
+      "name": "Completion panel",
+      "kind": "card",
+      "refersTo": "completion",
+      "description": "Success hierarchy; CSS shadow approximates native shadow values.",
+      "html": "<section class=\"ds-completion\"><strong>100%</strong><h2>Maze complete.</h2><p>Every path has your signature.</p></section>",
+      "css": ".ds-completion{padding:24px;border-radius:20px;background:#111827;text-align:center;color:#F3F5FA;font-family:'Space Grotesk',sans-serif;box-shadow:0 8px 18px #0006}.ds-completion strong{font-size:52px;color:#5CD6C0}.ds-completion h2{font-size:27px;font-weight:600;margin:12px 0}.ds-completion p{font-size:13px;line-height:22px;color:#AEBBD0}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Find your flow. Leave your color.",
+    "overview": "The game is the focal surface: a quiet dark field, a substantial centered board, connected mint corridors, and a shaded lavender ball. Original layouts and graphics support the sliding-and-painting mechanic. This records the implemented direction, not a newly approved visual concept.",
+    "keyCharacteristics": [
+      "Maze and responsiveness take priority over decoration.",
+      "Dark tonal surfaces with mint progress, lavender motion, and amber counters.",
+      "Space Grotesk, clear weight changes, and tabular counters."
+    ],
+    "rules": [],
+    "dos": [
+      "Do keep the responsive maze primary.",
+      "Do preserve the established dark palette and original visual identity.",
+      "Do keep ball movement and paint synchronized."
+    ],
+    "donts": [
+      "Don't use the mechanical reference game's layouts or graphics.",
+      "Don't treat source checks as native visual approval."
+    ]
+  }
+}

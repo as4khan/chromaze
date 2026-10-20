@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Chromaze",
+    "slug": "chromaze",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chromaze.game"
+    },
+    "android": {
+      "package": "com.chromaze.game"
+    },
+    "splash": {
+      "backgroundColor": "#111827"
+    },
+    "plugins": [
+      "expo-status-bar",
+      "expo-font"
+    ]
+  }
+}
