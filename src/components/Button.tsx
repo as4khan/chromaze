@@ -1,5 +1,7 @@
+/** Shared native action button for Home, gameplay controls, and the completion interface. */
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { theme } from '../theme';
+/** Exposes disabled state to both Pressable and assistive technology; secondary changes visual emphasis. */
 export function Button({ label, onPress, disabled = false, secondary = false }: {
   label: string; onPress: () => void; disabled?: boolean; secondary?: boolean;
 }) {

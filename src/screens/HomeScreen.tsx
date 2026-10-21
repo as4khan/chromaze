@@ -1,3 +1,4 @@
+/** Home and replay entry screen, using saved unlocks and a static preview of the original maze. */
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../components/Button';
 import { MazeBoard } from '../components/MazeBoard';
@@ -5,16 +6,16 @@ import { commitSlide, initialGame, slide } from '../game/engine';
 import { levels } from '../game/levels';
 import { Progress } from '../storage/progression';
 import { theme } from '../theme';
-import { useSharedValue } from 'react-native-reanimated';
+/** Converts one-based saved unlocks into the zero-based level index passed to onPlay. */
 export function HomeScreen({ progress, onPlay }: { progress: Progress; onPlay: (level: number) => void }) {
-  const animationProgress = useSharedValue(0);
   const level = levels[0]!;
+  // Reuse the engine for a decorative preview; this snapshot never changes real play or stored progress.
   const preview = commitSlide(initialGame(level), slide(level, level.start, 'right'));
   return <ScrollView contentContainerStyle={styles.root}>
     <View style={styles.heading}><Text accessibilityRole="header" style={styles.title}>chromaze<Text style={{ color: theme.paint }}>.</Text></Text>
       <Text style={styles.subtitle}>Find your flow. Leave your color.</Text></View>
     <View accessible accessibilityLabel="A lavender ball leaves a mint trail through a dark maze" style={styles.preview}>
-      <MazeBoard level={level} game={preview} size={220} active={null} progress={animationProgress} onReached={() => {}} onFinish={() => {}} />
+      <MazeBoard level={level} game={preview} size={220} active={null} onReached={() => {}} onFinish={() => {}} />
     </View>
     <View style={styles.bottom}><Text style={styles.instructions}>One swipe. A little momentum.{ '\n' }Paint every path to make it yours.</Text>
       <Button label={progress.finished ? 'Play again' : progress.unlocked > 1 ? `Continue · Level ${progress.unlocked}` : 'Play'}

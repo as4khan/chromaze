@@ -145,7 +145,7 @@
     "motion": [
       {
         "name": "slide",
-        "value": "100 ms per tile; linear",
+        "value": "50 ms per tile; linear; atomic UI-thread motion; latest-direction buffering",
         "purpose": "Shared ball and paint progress."
       },
       {

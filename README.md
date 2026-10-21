@@ -1,6 +1,6 @@
 # Chromaze
 
-An original sliding-ball painting puzzle for iOS and Android. Milestone 1 is a three-level Expo Go prototype targeting **Expo SDK 57**.
+An original sliding-ball painting puzzle for iOS and Android. Milestone 1.1 adds fluid flick and continuous-drag controls to the three-level prototype, still targeting **Expo SDK 57**.
 
 ## Run on your phone
 
@@ -17,9 +17,11 @@ If a previous SDK 58 Metro session is running, stop it before starting this proj
 
 ## Play
 
-Swipe anywhere in the gameplay region. Once a gesture crosses 22 points, its dominant axis selects the direction. The ball slides continuously to the next wall or floor boundary, at 100 ms per tile. A swipe produces one slide, and additional input during that slide is ignored. Blocked swipes do not count as moves.
+Flick anywhere in the gameplay region and release, or keep your thumb down and drag through successive directions. Initial input needs 14 points of travel; turns need 18 and reversals 22, with a 1.25 dominant-axis ratio to reject diagonal jitter. Continued straight dragging updates the thumb anchor without generating extra moves. Holding still does nothing.
 
-The start tile is already painted. A mint trail follows the animated ball and each tile becomes painted as it is reached. Paint every floor tile to finish. Undo restores the last completed slide's position, paint, and move count; Restart restores the starting state. Controls are disabled during movement. Completion unlocks the next level locally; finishing level 3 returns to a replay state on Home.
+Each command slides to the next wall or floor boundary, at a configurable 50 ms per tile. During a slide, only the latest requested direction is buffered; it is attempted immediately after the current slide commits. A blocked direction is discarded without counting a move. Releasing your finger resets touch recognition, not the active slide or buffer. Undo, restart, completion, and leaving the level clear pending input.
+
+The start tile is already painted. A mint trail follows the animated ball and each tile becomes painted as it is reached. Paint every floor tile to finish. Undo restores exactly one completed slide's position, paint, and move count, including slides made during a continuous drag. Restart restores the starting state. Undo and Restart are disabled during movement; Home safely cancels it. Completion unlocks the next level locally; finishing level 3 returns to a replay state on Home.
 
 Only unlocks and completion persist. Leaving a level or closing the app starts that level fresh. Undoing a completed level does not revoke an earned unlock.
 
@@ -35,7 +37,7 @@ npm.cmd exec -- expo export --platform all --output-dir dist
 
 The solver uses breadth-first search over stopping position **and painted floor mask**, and replays the resulting directions in tests. It proves paint coverage under the same pure collision rules used by gameplay, rather than merely checking floor connectivity. `verify:levels` prints playable solution sequences. Its state-space cap protects against accidental exponential searches on future larger levels.
 
-Current verification: **15 tests pass**, TypeScript passes, Expo's SDK 57 dependency check passes, and iOS/Android Hermes exports succeed. Full results and limits: [docs/TESTING.md](docs/TESTING.md).
+Milestone 1.1 verification and device-testing limits are recorded in [docs/TESTING.md](docs/TESTING.md).
 
 ## Code map
 
@@ -43,6 +45,7 @@ Current verification: **15 tests pass**, TypeScript passes, Expo's SDK 57 depend
 - `src/screens/`: Home, gameplay, and the completion interface.
 - `src/components/`: Skia maze/ball/trail rendering and accessible buttons.
 - `src/game/engine.ts`: pure movement, collision, painting, state snapshots, undo, and animation plans.
+- `src/game/controls.ts`: worklet-safe touch recognition and the idle/sliding/completing state machine with one pending direction.
 - `src/game/levels.ts`, `solver.ts`: original handcrafted layouts and solvability verification.
 - `src/storage/`: versioned AsyncStorage progression, validation, and corrupt-data recovery.
 - `src/theme.ts`: palette; `PRODUCT.md`, `DESIGN.md`: product and visual constraints.
@@ -52,7 +55,9 @@ Current verification: **15 tests pass**, TypeScript passes, Expo's SDK 57 depend
 
 ## Rendering and state
 
-Collision logic computes the entire slide before animation. Reanimated runs a linear progress value on the UI thread; Skia derives the ball center, rolling highlight, continuous trail endpoint, and paint fade from it. The JS thread receives tile-center crossings for the progress label, rather than per-frame position updates. A successful slide commits one immutable snapshot only after its animation finishes. The completion interface appears after that commit.
+Collision logic computes each complete slide before animation. Reanimated updates the motion geometry and progress together on the UI thread; Skia derives the ball center, rolling highlight, trail endpoint, and tile fades from that motion. The highlight's travel phase survives turns. Paint is tagged with a slide ID to keep stale progress from revealing the next path.
+
+Gesture recognition also runs on the UI thread. Only deliberate commands, reached tile centers, and slide completions cross to JS. The memoized board avoids rerendering on progress-label updates. A completed slide commits one immutable snapshot; a buffered slide is selected in that same state transition, without an intermediate idle render or artificial timer. Stale callbacks cannot commit an old slide twice. Completion appears only after the final movement finishes.
 
 No source, graphics, audio, or layouts from AMAZE!!! are used. Gameplay reference: [CrazyLabs' AMAZE](https://www.crazylabs.com/games-console/amaze/). Dependency compatibility follows [Expo SDK 57](https://docs.expo.dev/versions/v57.0.0/), including its bundled [Skia](https://docs.expo.dev/versions/v57.0.0/sdk/skia/) and [Reanimated](https://docs.expo.dev/versions/v57.0.0/sdk/reanimated/) versions.
 
