@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 512 512" >
+<defs><radialGradient id="ballGrad" cx="28%" cy="22%" fx="22%" fy="18%" r="83%">
+<stop offset="0" stop-color="#FFF0EA"/><stop offset=".26" stop-color="#FFC1BD"/><stop offset=".55" stop-color="#F58D9B"/><stop offset="1" stop-color="#B94978"/></radialGradient>
+<radialGradient id="lightHalo" cx="30%" cy="20%" r="70%"><stop stop-color="#fff" stop-opacity=".65"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><ellipse cx="256" cy="428" rx="144" ry="34" fill="#050A14" opacity=".22"/>
+<circle cx="256" cy="254" r="182" fill="url(#ballGrad)"/>
+<circle cx="256" cy="254" r="180" fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="5"/>
+<ellipse cx="189" cy="157" rx="51" ry="24" fill="#fff" opacity=".27" transform="rotate(-34 189 157)"/>
+<circle cx="182" cy="165" r="24" fill="#fff" opacity=".71"/>
+<circle cx="256" cy="254" r="182" fill="url(#lightHalo)" opacity=".26"/>
+<path d="M256 193 L278 245 L335 248 L291 283 L305 338 L256 307 L207 338 L221 283 L177 248 L234 245Z" fill="#fff6f5" opacity=".55"/>
+<path d="M322 403 Q366 378 390 337" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="7" stroke-linecap="round"/></svg>

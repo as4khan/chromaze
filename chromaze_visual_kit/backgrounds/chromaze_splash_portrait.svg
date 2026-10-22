@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1242" height="2688" viewBox="0 0 1242 2688" >
+<defs><radialGradient id="sphere" cx="31%" cy="25%" r="75%" fx="28%" fy="24%">
+<stop offset="0" stop-color="#F5F0FF"/><stop offset=".25" stop-color="#E4D9FF"/><stop offset=".54" stop-color="#A78BFA"/><stop offset=".84" stop-color="#855EDA"/><stop offset="1" stop-color="#55329F"/>
+</radialGradient><radialGradient id="bgGlow" cx="55%" cy="45%" r="70%"><stop stop-color="#25324B"/><stop offset="1" stop-color="#111827"/></radialGradient>
+<linearGradient id="tileRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#415069" stop-opacity=".42"/><stop offset="1" stop-color="#101827" stop-opacity="0"/></linearGradient><radialGradient id="ambient" cx="52%" cy="43%" r="75%"><stop stop-color="#283852" stop-opacity=".64"/><stop offset="1" stop-color="#111827" stop-opacity="0"/></radialGradient></defs><rect width="1242" height="2688" fill="#111827"/>
+<rect width="1242" height="2688" fill="url(#ambient)"/>
+<g stroke="#5CD6C0" stroke-opacity=".08" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-60 375 H360 V600 H540"/><path d="M1302 2170 H940 V1930 H730 V1830"/>
+<path d="M-60 1670 H270 V1520 H420"/><path d="M1320 540 H930 V690 H835"/></g>
+<g transform="translate(110 500) scale(1.00)"><g transform="">
+       <path d="M 737 300 H 462 Q 282 300 282 482 V 565 Q 282 722 441 722 H 624 Q 741 722 741 608 V 555 H 549" fill="none" stroke="#03080f" stroke-opacity=".33" stroke-width="119" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 19)"/>
+       <path d="M 737 300 H 462 Q 282 300 282 482 V 565 Q 282 722 441 722 H 624 Q 741 722 741 608 V 555 H 549" fill="none" stroke="#164c4c" stroke-width="105" stroke-linecap="round" stroke-linejoin="round"/>
+       <path d="M 737 300 H 462 Q 282 300 282 482 V 565 Q 282 722 441 722 H 624 Q 741 722 741 608 V 555 H 549" fill="none" stroke="#5CD6C0" stroke-width="86" stroke-linecap="round" stroke-linejoin="round"/>
+       <path d="M 720 285 H 462 Q 282 285 282 482 V 535" fill="none" stroke="#b3fff0" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+       <circle cx="549" cy="555" r="77" fill="#101626" fill-opacity=".5" transform="translate(0 18)"/>
+       <circle cx="549" cy="555" r="74" fill="url(#sphere)"/>
+       <circle cx="526" cy="531" r="18" fill="#fff" opacity=".65"/>
+       <path d="M 588 602 Q 570 616 549 615" stroke="#E0D5FF" stroke-width="6" opacity=".3" fill="none" stroke-linecap="round"/>
+       </g></g>
+<text x="621" y="1630" text-anchor="middle" fill="#F3F5FA" font-family="Inter Display,Inter,Arial" font-size="147" font-weight="750" letter-spacing="-8">chromaze<tspan fill="#5CD6C0">.</tspan></text>
+<text x="621" y="1735" text-anchor="middle" fill="#AEBBD0" font-family="Inter,Arial" font-size="41" letter-spacing="1.5">Find your flow. Leave your color.</text>
+<circle cx="621" cy="2345" r="7" fill="#5CD6C0"/><circle cx="652" cy="2345" r="7" fill="#A78BFA"/><circle cx="683" cy="2345" r="7" fill="#F5B971"/></svg>

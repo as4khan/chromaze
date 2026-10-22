@@ -1,19 +1,21 @@
-/** Shared native action button for Home, gameplay controls, and the completion interface. */
-import { Pressable, StyleSheet, Text } from 'react-native';
+/** Shared native action button with visual-kit glyphs and consistent accessible touch targets. */
+import { Image, ImageSourcePropType, Pressable, StyleSheet, Text } from 'react-native';
 import { theme } from '../theme';
-/** Exposes disabled state to both Pressable and assistive technology; secondary changes visual emphasis. */
-export function Button({ label, onPress, disabled = false, secondary = false }: {
-  label: string; onPress: () => void; disabled?: boolean; secondary?: boolean;
+/** Icons are decorative; the visible label remains the accessible name in every state. */
+export function Button({ label, onPress, disabled = false, secondary = false, icon }: {
+  label: string; onPress: () => void; disabled?: boolean; secondary?: boolean; icon?: ImageSourcePropType;
 }) {
   return <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled }}
     disabled={disabled} onPress={onPress} style={({ pressed }) => [styles.button, secondary && styles.secondary,
-      disabled && { opacity: 0.35 }, pressed && { opacity: 0.75, transform: [{ scale: 0.98 }] }]}>
+      disabled && { opacity: 0.35 }, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}>
+    {icon && <Image source={icon} accessible={false} style={[styles.icon, { tintColor: secondary ? theme.text : theme.background }]} />}
     <Text style={[styles.text, secondary && { color: theme.text }]}>{label}</Text>
   </Pressable>;
 }
 const styles = StyleSheet.create({
-  button: { minHeight: 54, paddingHorizontal: 24, paddingVertical: 15, borderRadius: 14,
-    backgroundColor: theme.paint, alignItems: 'center', justifyContent: 'center' },
+  button: { minHeight: 54, paddingHorizontal: 18, paddingVertical: 15, borderRadius: 16,
+    backgroundColor: theme.paint, flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'center' },
   secondary: { backgroundColor: theme.wall },
-  text: { fontFamily: 'SpaceGrotesk_600SemiBold', fontSize: 16, color: theme.background },
+  icon: { width: 22, height: 22, flexShrink: 0 },
+  text: { flexShrink: 1, textAlign: 'center', fontFamily: 'SpaceGrotesk_600SemiBold', fontSize: 16, color: theme.background },
 });

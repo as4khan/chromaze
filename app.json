@@ -10,7 +10,11 @@
       "bundleIdentifier": "com.chromaze.game"
     },
     "android": {
-      "package": "com.chromaze.game"
+      "package": "com.chromaze.game",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/brand/chromaze_adaptive_foreground.png",
+        "backgroundColor": "#111827"
+      }
     },
     "splash": {
       "backgroundColor": "#111827"
@@ -18,6 +22,7 @@
     "plugins": [
       "expo-status-bar",
       "expo-font"
-    ]
+    ],
+    "icon": "./assets/brand/chromaze_app_icon.png"
   }
 }

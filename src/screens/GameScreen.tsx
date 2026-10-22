@@ -1,34 +1,44 @@
 /** Gameplay coordinator connecting touch commands, committed movement state, rendering, and level actions. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { BackHandler, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Image, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming, ReduceMotion } from 'react-native-reanimated';
 import { Button } from '../components/Button';
 import { MazeBoard } from '../components/MazeBoard';
 import { Direction, floorTiles, undo } from '../game/engine';
 import { createMovement, finishMovement, initialTouch, Movement, recognizeDirection, requestMovement, resetMovement } from '../game/controls';
 import { levels } from '../game/levels';
 import { theme } from '../theme';
+import { icons } from '../assets';
+import { slideFeedback } from '../feedback';
+import { BallAppearance } from '../appearance';
 
 /** Appears after the final slide commits; final selects the home action instead of another level. */
-function Completion({ moves, final, onNext, onUndo }: { moves: number; final: boolean; onNext: () => void; onUndo: () => void }) {
-  const scale = useSharedValue(0.92);
-  useEffect(() => { scale.value = withSpring(1, { damping: 14 }); }, []);
-  const style = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
-  return <Animated.View accessibilityViewIsModal style={[styles.completion, style]}>
-    <Text style={styles.completeMark}>100%</Text>
+function Completion({ moves, final, onNext, onUndo, availableHeight, appearance }: { appearance: BallAppearance; moves: number; final: boolean; onNext: () => void; onUndo: () => void; availableHeight: number }) {
+  const reveal = useSharedValue(0);
+  useEffect(() => { reveal.value = withTiming(1, { duration: 280, reduceMotion: ReduceMotion.System }); }, [reveal]);
+  const style = useAnimatedStyle(() => ({ opacity: reveal.value,
+    transform: [{ translateY: (1 - reveal.value) * 12 }, { scale: 0.97 + reveal.value * 0.03 }] }));
+  return <Animated.View accessibilityViewIsModal style={[styles.completion, { maxHeight: availableHeight }, style]}>
+    {/* Scroll on short screens or large text without shrinking the completion actions. */}
+    <ScrollView contentContainerStyle={styles.completionContent}>
+    <Image source={icons.sparkle} accessible={false} style={[styles.completeIcon, { tintColor: appearance.paint[0] }]} />
+    <Text style={[styles.completeMark, { color: appearance.paint[0] }]}>100%</Text>
     <Text accessibilityRole="header" style={styles.completeTitle}>{final ? 'A beautiful finish.' : 'Maze complete.'}</Text>
     <Text style={styles.hint}>{final ? 'Every maze, a little more color.' : 'Every path has your signature.'}{'\n'}{moves} moves. All yours.</Text>
-    <Button label={final ? 'Back to home' : 'Next Level'} onPress={onNext} />
-    <Button label="Undo last slide" secondary onPress={onUndo} />
+    <Button icon={final ? icons.home : icons.next} label={final ? 'Back to home' : 'Next Level'} onPress={onNext} />
+    <Button icon={icons.undo} label="Undo last slide" secondary onPress={onUndo} />
+    </ScrollView>
   </Animated.View>;
 }
 
 /** Plays the zero-based level index and reports that same index once its final slide has committed. */
-export function GameScreen({ index, onHome, onComplete, onNext }: {
+export function GameScreen({ index, onHome, onComplete, onNext, appearance }: {
+  appearance: BallAppearance;
   index: number; onHome: () => void; onComplete: (index: number) => void; onNext: () => void;
 }) {
   const level = levels[index]!;
+  const compact = useWindowDimensions().height < 740;
   const [movement, setMovement] = useState(() => createMovement(level));
   // Refs let queued animation/input callbacks see the newest state before the next React render.
   const state = useRef(movement);
@@ -55,6 +65,8 @@ export function GameScreen({ index, onHome, onComplete, onNext }: {
     const previous = state.current;
     const next = finishMovement(level, previous, id);
     update(next);
+    // State commits and buffered turns happen first; optional hardware feedback never blocks them.
+    if (next !== previous) void slideFeedback(next.phase === 'completing');
     if (next !== previous && next.phase === 'completing') {
       touching.value = false;
       onComplete(index);
@@ -102,49 +114,54 @@ export function GameScreen({ index, onHome, onComplete, onNext }: {
     // Releasing/cancelling resets touch recognition, while accepted motion and buffered input survive.
     .onFinalize(() => { touching.value = false; touch.value = initialTouch(); }), [done, request, touch, touching]);
   const size = Math.max(0, Math.min(area.width - 24, area.height - 24, 480));
-  return <View style={styles.root}>
-    <View style={styles.top}><View style={styles.homeControl}><Button label="Home" secondary onPress={leave} /></View>
+  return <View style={[styles.root, compact && styles.compact]}>
+    <View style={styles.top}><View style={styles.homeControl}><Button icon={icons.home} label="Home" secondary onPress={leave} /></View>
       <Text style={styles.brand} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>chromaze<Text style={{ color: theme.paint }}>.</Text></Text></View>
-    <View style={styles.heading}><View style={{ flex: 1 }}><Text accessibilityRole="header" style={styles.title}>Level {level.id}</Text>
+    <View style={[styles.heading, compact && { marginBottom: 12 }]}><View style={{ flex: 1 }}><Text accessibilityRole="header" style={styles.title}>Level {level.id}</Text>
       <Text style={styles.levelName}>{level.name}</Text></View>
-      <View style={styles.moveCount}><Text style={styles.moveValue}>{game.moves + (active ? 1 : 0)}</Text><Text style={styles.small}>moves</Text></View></View>
-    <View style={styles.progressLabels}><Text style={styles.small}>Painted</Text>
-      <Text accessibilityLiveRegion="polite" style={styles.progressText}>{count} / {total}</Text></View>
+      <View style={styles.moveCount}><Image source={icons.moves} accessible={false} style={styles.hudIcon} /><Text style={styles.moveValue}>{game.moves + (active ? 1 : 0)}</Text><Text style={styles.small}>moves</Text></View></View>
+    <View style={styles.progressLabels}><View style={styles.paintLabel}><Image source={icons.paint} accessible={false} style={styles.hudIcon} /><Text style={styles.small}>Painted</Text></View>
+      <Text accessibilityLiveRegion="polite" style={[styles.progressText, { color: appearance.paint[0] }]}>{count} / {total}</Text></View>
     <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: total, now: count }} accessibilityLabel="Painted tiles" style={styles.track}>
-      <View style={[styles.fill, { width: `${count / total * 100}%` }]} /></View>
+      <View style={[styles.fill, { width: `${count / total * 100}%`, flexDirection: 'row' }]}>{appearance.paint.map(color => <View key={color} style={{ flex: 1, backgroundColor: color }} />)}</View></View>
     <View style={styles.playArea}
       onLayout={event => setArea(event.nativeEvent.layout)}>
       <GestureDetector gesture={gesture}><View collapsable={false} style={styles.gestureArea}>
-        {size > 0 && <View style={styles.board}><MazeBoard level={level} game={game} size={size}
+        {size > 0 && <View style={styles.board}><MazeBoard appearance={appearance} level={level} game={game} size={size}
           active={active} onReached={onReached} onFinish={finish} /></View>}
       </View></GestureDetector>
-      {done && <Completion moves={game.moves} final={index === levels.length - 1} onNext={onNext} onUndo={() => reset(true)} />}
+      {done && <Completion appearance={appearance} availableHeight={area.height} moves={game.moves} final={index === levels.length - 1} onNext={onNext} onUndo={() => reset(true)} />}
     </View>
     <Text style={styles.hint}>Flick to roll. Keep dragging to steer.</Text>
-    <View style={styles.actions}><View style={{ flex: 1 }}><Button label="Undo" secondary disabled={!!active || !game.history.length} onPress={() => reset(true)} /></View>
-      <View style={{ flex: 1 }}><Button label="Restart" secondary disabled={!!active} onPress={() => reset()} /></View></View>
+    <View style={styles.actions}><View style={{ flex: 1 }}><Button icon={icons.undo} label="Undo" secondary disabled={!!active || !game.history.length} onPress={() => reset(true)} /></View>
+      <View style={{ flex: 1 }}><Button icon={icons.restart} label="Restart" secondary disabled={!!active} onPress={() => reset()} /></View></View>
   </View>;
 }
 const styles = StyleSheet.create({
   root: { flex: 1, paddingHorizontal: 24, paddingTop: 10, paddingBottom: 14, width: '100%', maxWidth: 620, alignSelf: 'center' },
-  top: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 22 },
+  compact: { paddingHorizontal: 18, paddingTop: 4, paddingBottom: 8 },
+  hudIcon: { width: 18, height: 18 },
+  paintLabel: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  top: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 16 },
   homeControl: { flexShrink: 0 },
   brand: { flex: 1, minWidth: 0, textAlign: 'right', fontFamily: 'SpaceGrotesk_700Bold', color: theme.text, fontSize: 22, letterSpacing: -0.6 },
   heading: { flexDirection: 'row', alignItems: 'center', marginBottom: 22, gap: 12 },
   title: { fontFamily: 'SpaceGrotesk_600SemiBold', color: theme.text, fontSize: 32, letterSpacing: -1 },
   levelName: { fontFamily: 'SpaceGrotesk_400Regular', color: theme.muted, fontSize: 14, marginTop: 4 },
-  moveCount: { alignItems: 'flex-end' }, moveValue: { fontFamily: 'SpaceGrotesk_500Medium', color: theme.accent, fontSize: 30, fontVariant: ['tabular-nums'] },
+  moveCount: { flexDirection: 'row', flexWrap: 'wrap', maxWidth: 100, alignItems: 'center', justifyContent: 'flex-end', columnGap: 6 }, moveValue: { fontFamily: 'SpaceGrotesk_500Medium', color: theme.accent, fontSize: 30, fontVariant: ['tabular-nums'] },
   small: { fontFamily: 'SpaceGrotesk_400Regular', color: theme.muted, fontSize: 13 },
   progressLabels: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
   progressText: { fontFamily: 'SpaceGrotesk_500Medium', color: theme.paint, fontSize: 13, fontVariant: ['tabular-nums'] },
-  track: { height: 4, backgroundColor: theme.wall, borderRadius: 2, overflow: 'hidden' }, fill: { height: 4, backgroundColor: theme.paint },
+  track: { height: 6, backgroundColor: theme.wall, borderRadius: 2, overflow: 'hidden' }, fill: { height: 6, backgroundColor: theme.paint },
   playArea: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 130 },
   gestureArea: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center' },
   board: { padding: 10, backgroundColor: theme.recess, borderRadius: 22 },
   hint: { fontFamily: 'SpaceGrotesk_400Regular', color: theme.muted, textAlign: 'center', fontSize: 13, lineHeight: 22, marginBottom: 18 },
   actions: { flexDirection: 'row', gap: 12 },
-  completion: { position: 'absolute', backgroundColor: theme.background, borderRadius: 20, padding: 24,
+  completion: { position: 'absolute', backgroundColor: theme.background, borderRadius: 20,
     left: 0, right: 0, gap: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 8 },
+  completionContent: { padding: 24, gap: 12 },
+  completeIcon: { width: 32, height: 32, alignSelf: 'center' },
   completeMark: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 52, color: theme.paint, textAlign: 'center' },
   completeTitle: { fontFamily: 'SpaceGrotesk_600SemiBold', fontSize: 27, color: theme.text, textAlign: 'center' },
 });

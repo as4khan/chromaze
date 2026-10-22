@@ -1,3 +1,19 @@
+# Milestone 1.2.2 customization verification
+
+All 60 automated tests and TypeScript validation pass. Tests cover the six supplied PNG decodes and source-derived colors, invalid/missing preference fallback, independent persistence, ordered rapid writes and recovery after failure, bounded particle size/opacity/lifetime, the real particle callback's final idle expiry, all six paint shaders through commits/turns/Undo/Restart/completion, Prismatic color variation, and floor-clipped splatters. The previous movement/control and paint-seam raster tests remain enabled.
+
+The paint snapshot now travels with motion in one UI-thread update. Geometry stays in grid units to avoid restarting a slide when the board resizes. Particle callbacks never change React game state; expired idle frames stop updating drawing values. No movement constants, touch recognition, collision rules, or progression storage changed. No dependencies were added.
+
+Native selector layout, screen-reader behavior, touch latency, actual particle intensity, 60/120 Hz frame pacing, and real device persistence still need iPhone verification. Software raster checks and Hermes exports cannot certify native visual behavior. See VISUAL-KIT.md for the device checklist.
+
+# Milestone 1.2.1 paint verification
+
+The renderer now combines committed cells and the animated full-width ribbon into one opaque mint path, clipped to the same rounded floor outline used for the unpainted floor. This replaces the narrower unmasked stroke, per-tile alpha transitions, overlapping bridge draws, and transient sheen. The leading edge follows the moving cell footprint continuously; the paint count still advances only at tile-center crossings.
+
+CanvasKit, already installed with Skia, rasterizes the production geometry in tests. Coverage includes long slides at fractional cell sizes, all four directions, floor-mask containment, no interior seams, buffered corner handoffs, matching before/after-commit coverage for all three level solutions, Undo, Restart, and completion. A regression probe of the former fade formula confirmed last-tile edge opacity of about 0.733 at 99% slide progress, followed by opacity 1 on commit.
+
+Validation: all 45 tests, TypeScript, and iOS/Android Hermes exports pass. Software-Skia frame inspection supports the geometry checks; it does not exercise the native component or certify iPhone frame pacing. On iPhone, check long slides, rapid buffered turns, revisits, board resizing, background/resume, Undo/Restart, final-tile completion, and paint edges at 60/120 Hz. Speed remains 50 ms per tile; controls, engine rules, storage, and ball styling are unchanged.
+
 # Milestone 1.1.1 speed verification
 
 October 20, 2026: the centralized MS_PER_TILE setting changed from 80 to 50 ms. A four-tile slide now targets 200 ms instead of 320 ms. The updated timing regression failed before the constant changed, then all 30 tests passed. Assertions also cover one-tile and blocked-slide durations and paint-count crossings at 50 ms intervals. TypeScript and git diff --check passed.
