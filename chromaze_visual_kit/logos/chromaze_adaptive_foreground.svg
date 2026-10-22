@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024" >
+<defs><radialGradient id="sphere" cx="31%" cy="25%" r="75%" fx="28%" fy="24%">
+<stop offset="0" stop-color="#F5F0FF"/><stop offset=".25" stop-color="#E4D9FF"/><stop offset=".54" stop-color="#A78BFA"/><stop offset=".84" stop-color="#855EDA"/><stop offset="1" stop-color="#55329F"/>
+</radialGradient><radialGradient id="bgGlow" cx="55%" cy="45%" r="70%"><stop stop-color="#25324B"/><stop offset="1" stop-color="#111827"/></radialGradient>
+<linearGradient id="tileRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#415069" stop-opacity=".42"/><stop offset="1" stop-color="#101827" stop-opacity="0"/></linearGradient></defs><g transform="">
+       <path d="M 737 300 H 462 Q 282 300 282 482 V 565 Q 282 722 441 722 H 624 Q 741 722 741 608 V 555 H 549" fill="none" stroke="#03080f" stroke-opacity=".33" stroke-width="119" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 19)"/>
+       <path d="M 737 300 H 462 Q 282 300 282 482 V 565 Q 282 722 441 722 H 624 Q 741 722 741 608 V 555 H 549" fill="none" stroke="#164c4c" stroke-width="105" stroke-linecap="round" stroke-linejoin="round"/>
+       <path d="M 737 300 H 462 Q 282 300 282 482 V 565 Q 282 722 441 722 H 624 Q 741 722 741 608 V 555 H 549" fill="none" stroke="#5CD6C0" stroke-width="86" stroke-linecap="round" stroke-linejoin="round"/>
+       <path d="M 720 285 H 462 Q 282 285 282 482 V 535" fill="none" stroke="#b3fff0" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+       <circle cx="549" cy="555" r="77" fill="#101626" fill-opacity=".5" transform="translate(0 18)"/>
+       <circle cx="549" cy="555" r="74" fill="url(#sphere)"/>
+       <circle cx="526" cy="531" r="18" fill="#fff" opacity=".65"/>
+       <path d="M 588 602 Q 570 616 549 615" stroke="#E0D5FF" stroke-width="6" opacity=".3" fill="none" stroke-linecap="round"/>
+       </g></svg>
