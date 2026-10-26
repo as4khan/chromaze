@@ -1,6 +1,8 @@
 /** Static Metro asset references for branding, actions, and the six Skia-compatible ball textures. */
 export const brand = { symbol: require('../assets/brand/chromaze_symbol.png') };
 export const icons = {
+  starFilled: require('../assets/ui/star_filled.png'), starOutline: require('../assets/ui/star_outline.png'),
+  lock: require('../assets/ui/lock_light.png'),
   play: require('../assets/ui/play_light.png'), home: require('../assets/ui/home_light.png'),
   undo: require('../assets/ui/undo_light.png'), restart: require('../assets/ui/restart_light.png'),
   next: require('../assets/ui/next_light.png'), moves: require('../assets/ui/moves_mint.png'),

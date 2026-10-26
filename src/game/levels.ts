@@ -1,14 +1,6 @@
-/** Original handcrafted levels shared by gameplay, rendering, and sliding-solvability tests. */
-import { Level } from './engine';
-// A dot is floor; a hash is wall. Starts are zero-based; array order defines progression.
-export const levels: readonly Level[] = [
-  { id: 1, name: 'First light', start: { row: 0, col: 0 }, grid: [
-    '.....', '####.', '.....', '.####', '.....',
-  ] },
-  { id: 2, name: 'Around the bend', start: { row: 0, col: 0 }, grid: [
-    '......', '.####.', '.#....', '.#.###', '.#....', '....#.',
-  ] },
-  { id: 3, name: 'The quiet labyrinth', start: { row: 0, col: 0 }, grid: [
-    '.......', '.#.###.', '.#...#.', '.#.#.#.', '.#...#.', '.###.#.', '.....#.',
-  ] },
-];
+/** Local level-loading facade; future validated stage data can use the same catalog boundary. */
+import { stages as localStages } from './stages';
+import { createLevelCatalog } from './catalog';
+export const catalog = createLevelCatalog(localStages);
+// Preserve existing screen/solver imports and the original progression order.
+export const { levels, stages, stageForLevel } = catalog;

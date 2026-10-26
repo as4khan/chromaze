@@ -57,3 +57,9 @@ export function movingWake(fromRow: number, fromCol: number, toRow: number, toCo
     opacity: Math.max(0, Math.min(1, travel / 0.3, (distance - travel) / 0.6)) * 0.55,
   };
 }
+
+/** Fit both axes for rectangular campaign mazes while retaining the existing 24-point gutter and width cap. */
+export function fitBoardWidth(columns: number, rows: number, width: number, height: number): number {
+  if (columns <= 0 || rows <= 0) return 0;
+  return Math.max(0, Math.min(width - 24, (height - 24) * columns / rows, 480));
+}
