@@ -16,12 +16,15 @@
         "backgroundColor": "#111827"
       }
     },
-    "splash": {
-      "backgroundColor": "#111827"
-    },
     "plugins": [
       "expo-status-bar",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#111827"
+        }
+      ]
     ],
     "icon": "./assets/brand/chromaze_app_icon.png"
   }

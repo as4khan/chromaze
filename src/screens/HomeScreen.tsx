@@ -9,10 +9,12 @@ import { levels } from '../game/levels';
 import { Progress } from '../storage/progression';
 import { theme } from '../theme';
 import { BallAppearance } from '../appearance';
+import { CampaignProgress } from '../components/CampaignProgress';
+import { continueIndex, totalStars } from '../game/progression';
 
 const ignorePreviewEvent = () => {};
-/** Maps saved one-based unlocks to the existing zero-based Play/Continue navigation. */
-export function HomeScreen({ progress, onPlay, appearance, onCustomize }: { progress: Progress; onPlay: (level: number) => void; appearance: BallAppearance; onCustomize: () => void }) {
+/** Continue uses saved unlocks; completion and star totals stay visible independently of ball selection. */
+export function HomeScreen({ progress, onPlay, appearance, onCustomize, onLevels }: { onLevels: () => void; progress: Progress; onPlay: (level: number) => void; appearance: BallAppearance; onCustomize: () => void }) {
   const { width, height } = useWindowDimensions();
   const level = levels[0]!;
   // Reuse an immutable engine snapshot: the hero is a real maze, never a screenshot or active game.
@@ -31,11 +33,12 @@ export function HomeScreen({ progress, onPlay, appearance, onCustomize }: { prog
       <View style={styles.bottom}>
         <View style={styles.instructions}><Text style={styles.lead}>One swipe. A little momentum.</Text>
           <Text style={styles.body}>Paint every path to make it yours.</Text></View>
-        <Button icon={icons.play} label={progress.finished ? 'Play again' : progress.unlocked > 1 ? 'Continue · Level ' + progress.unlocked : 'Play'}
-          onPress={() => onPlay(progress.finished ? 0 : progress.unlocked - 1)} />
-        {progress.unlocked > 1 && !progress.finished && <Button icon={icons.restart} label="Start from level 1" secondary onPress={() => onPlay(0)} />}
+        <Button icon={icons.play} label={progress.finished ? 'Play again' : progress.unlocked > 1 ? 'Continue · Level ' + (continueIndex(progress, levels.length) + 1) : 'Play'}
+          onPress={() => onPlay(continueIndex(progress, levels.length))} />
+        <Button icon={icons.next} label="Choose level" secondary onPress={onLevels} />
+        <CampaignProgress completed={progress.completed.length} total={levels.length} stars={totalStars(progress)} />
         <Button icon={icons.sparkle} label={'Choose ball · ' + appearance.name} secondary onPress={onCustomize} />
-        <Text style={styles.footer}>THREE MAZES. TAKE YOUR TIME.</Text>
+        <Text style={styles.footer}>20 MAZES. FOUR STAGES. YOUR FLOW.</Text>
       </View>
     </View>
   </ScrollView>;

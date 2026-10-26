@@ -1,3 +1,39 @@
+# Milestone 2.2 level design tools
+
+October 25, 2026: all 128 tests pass, TypeScript passes, and full campaign validation passes for the unchanged 20 layouts. The generated [LEVEL-ANALYSIS.md](LEVEL-ANALYSIS.md) records dimensions, floor counts, verified optimal moves, move-based estimated difficulty, and two near-match warnings (10/12 and 12/15); there are no exact duplicates or validation errors. Strict mode intentionally returns nonzero for those warnings.
+
+Tool tests cover malformed ASCII/JSON metadata, disconnected and connected-but-unsolvable grids, exact solution replay, stale minima, state-budget exhaustion, all eight symmetry transforms, wall-padding normalization, floor-based near similarity, batch ID collisions/gaps, report output, safe author-file creation, CLI error exit codes, and 125-level catalog lookups. A production-entry import walk confirms scripts, the solver, and Node builtins are absent from gameplay's module graph. Existing movement, paint, cosmetic, star-rating, migration, and navigation tests remain enabled. Source hashes confirm prior gameplay, all stage data, progression, preferences, and dependency lockfile are unchanged; only the production catalog facade is reorganized.
+
+The authoring workflow and future validated-data loading boundary are documented in [LEVEL-AUTHORING.md](LEVEL-AUTHORING.md). No backend or dependencies were added. No native UI changed, and a new device session was not run. Difficulty and near-match scores remain design-review aids, not substitutes for playtesting; scaled/different-size copies may evade the equal-dimension comparison.
+
+# Milestone 2.1 star ratings and personal records
+
+Validation: all 119 tests pass, TypeScript passes, iOS/Android Hermes bundles export successfully, and git diff --check passes. No new dependencies were added.
+
+October 25, 2026: thresholds, version-3 save migration, replay improvements, independent best-move/highest-star merges, invalid record recovery, all-60-star completion, and stale-write storage round-trips are covered by automated tests. The real App navigation callbacks verify improved and slower replays. A native-view mock runs the real GameScreen finish and Undo/Restart callbacks, checking final committed moves, stale callback rejection, result content, and stable animation callbacks during recovered saves. These are callback/content checks, not native layout or animation performance tests.
+
+The original storage key, gameplay, level data, 50 ms/tile speed, solver, paint renderer, splatters, all six cosmetics, and dependencies remain unchanged. See [CAMPAIGN.md](CAMPAIGN.md) for thresholds and migration policy. Device checks remain: completion scrolling at large text sizes, star art, reduced motion, reward feel, slower replay retention, Undo/re-finish, and persisted totals after relaunch.
+
+# Expo SDK 58 upgrade verification
+
+October 23, 2026: upgraded from SDK 57 to the SDK 58 compatible patch set (expo 58.0.19, React 19.3.0, React Native 0.88.0, Skia 2.14.0, Reanimated 4.7.1, Gesture Handler 3.3.0, Worklets 0.13.0, and Safe Area Context 5.10.1). Expo selected the matching font, status-bar, and haptics versions. The removed legacy splash config migrated to the expo-splash-screen plugin with the existing #111827 background. Application source, game rules, levels, and saved-data keys were unchanged by this upgrade.
+
+Validation: 108 tests pass, TypeScript passes, dependency alignment passes, Expo Doctor passes 20/20 checks, and iOS/Android Hermes exports pass. Current setup instructions now target SDK 58; records below describe their original SDK 57 verification environments.
+
+Stop any old Metro session, then run `npm.cmd start -- --clear` and scan its new QR code using Expo Go for SDK 58. Native launch, gestures, painting, haptics, persistence, and frame pacing still need an iPhone check. The custom splash background needs a native build to verify; Expo Go does not reproduce the release splash screen fully.
+
+npm audit reports five high-severity dependency findings through Expo CLI (node-forge and zod). No SDK-compatible complete fix was offered; the proposed forced fix downgrades Expo to 44.0.6 and was not applied. Recheck upstream patches before distribution.
+
+# Milestone 2.0 campaign verification
+
+October 23, 2026: all 108 automated tests pass; TypeScript validation, the 20-level offline verifier, and final iOS/Android Hermes bundle exports pass. Tests preserve the original first three levels, reject rotated/reflected duplicate layouts, assert stage growth and nondecreasing minimum moves, and replay every minimum solution. Campaign coverage includes legacy/malformed saves, old Level-3 finishers, unlocks, replay, full completion, serialized storage recovery, and board fitting across square/rectangular phone/tablet dimensions.
+
+Navigation tests exercise the real App callbacks with mocked native primitives: locked selections, Home/selector/game transitions, Continue after migration, ball-selector access, replay, next-level unlocks, and Level 20 returning Home. They do not mount native views or run native gestures.
+
+Existing movement, appearance, splatter, and paint tests now include all 20 campaign solutions. Software-Skia checks retain strict floor-interior fill and wall clipping. Dense fractional-pixel boundaries showed at most 8/255 alpha variation at antialiased edge pixels; only boundary comparisons allow that measured tolerance. Fully solid/empty pixels and all six appearance color comparisons retain their strict checks. The production paint renderer, engine, controls, solver, ball preferences, and dependencies are unchanged.
+
+See [CAMPAIGN.md](CAMPAIGN.md) for exact minimum moves, migration behavior, and remaining device checks. Native layout, accessibility, 60/120 Hz performance, and subjective difficulty remain unverified.
+
 # Milestone 1.2.2 customization verification
 
 All 60 automated tests and TypeScript validation pass. Tests cover the six supplied PNG decodes and source-derived colors, invalid/missing preference fallback, independent persistence, ordered rapid writes and recovery after failure, bounded particle size/opacity/lifetime, the real particle callback's final idle expiry, all six paint shaders through commits/turns/Undo/Restart/completion, Prismatic color variation, and floor-clipped splatters. The previous movement/control and paint-seam raster tests remain enabled.
